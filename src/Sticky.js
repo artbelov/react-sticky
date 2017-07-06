@@ -67,7 +67,7 @@ export default class Sticky extends Component {
 
     const style = !isSticky ? { } : {
       position: 'fixed',
-      top: bottomDifference > 0 ? (this.props.relative ? parent.offsetTop - parent.offsetParent.scrollTop : 0) : bottomDifference,
+      top: bottomDifference > 0 ? (this.props.relative ? parent.offsetTop - parent.offsetParent.scrollTop : -this.props.topOffset) : bottomDifference,
       left: placeholderClientRect.left,
       width: placeholderClientRect.width
     }
@@ -85,6 +85,11 @@ export default class Sticky extends Component {
       style
     });
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.distanceFromTop !== this.state.distanceFromTop
+      || nextProps.children !== this.props.children
+  }
 
   render() {
     const element = React.cloneElement(
